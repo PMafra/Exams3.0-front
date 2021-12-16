@@ -22,7 +22,6 @@ export default function Visualize() {
       })
       .catch((err) => {
         console.log(err);
-        console.log(schoolsList);
       });
   };
 
@@ -36,7 +35,7 @@ export default function Visualize() {
         <StyledFormContainer>
           <StyledForm>
             <label htmlFor="filters" className="inputs-container">
-              Choose your filters:
+              <h2>Select the filters:</h2>
               <input list="schools" name="schools" id="filters" />
               <input list="professors" name="professors" id="filters" />
               <input list="types" name="types" id="filters" />
@@ -68,7 +67,7 @@ export default function Visualize() {
                 <option value={school} />
               ))}
             </datalist>
-            <StyledSubmit type="submit" className="submit" />
+            <input type="submit" className="submit" />
           </StyledForm>
         </StyledFormContainer>
       </StyledMainContent>
@@ -96,31 +95,46 @@ const StyledFormContainer = styled.div`
   width: 100vw;
 `;
 const StyledForm = styled.form`
-  background-color: blue;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 50px;
+  gap: 10vh;
   .inputs-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 30px;
+    gap: 5vh;
+    h2 {
+      color: #ffffff;
+      font-size: 30px;
+      margin-bottom:2vh;
+    }
+    input {
+      width: 350px;
+      height: 40px;
+      border-radius: 20px;
+      border: none;
+      padding: 0 15px;
+      font-size: 20px;
+      :focus {
+        outline: none;
+      }
+    }
   }
-`;
-const StyledSubmit = styled.input`
-  width: 200px;
-  height:70px;
-  border-radius: 60px;
-  background-color: #bfbafc;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  cursor: pointer;
-  border: none;
-  &:hover {
-    opacity: 0.8;
+  .submit {
+    width: 200px;
+    height:70px;
+    border-radius: 60px;
+    background-color: #bfbafc;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    border: none;
+    &:hover {
+      opacity: 0.8;
+    }
   }
 `;

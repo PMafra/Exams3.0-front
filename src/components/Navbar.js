@@ -30,6 +30,7 @@ const StyledTopLogoContainer = styled.div`
   height: 120px;
   font-size: 50px;
   color: #ffffff;
+  font-style: italic;
 `;
 const StyledTopBarContainer = styled.div`
   width: 100vw;
