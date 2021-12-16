@@ -18,6 +18,8 @@ export default function Visualize() {
   const [isProfessorFilter, setIsProfessorFilter] = useState(true);
   const [isDisciplineFilter, setIsDisciplineFilter] = useState(false);
 
+  const [isSubmit, setIsSubmit] = useState(false);
+
   const requestSchools = () => {
     getSchools()
       .then((res) => {
@@ -112,7 +114,7 @@ export default function Visualize() {
                 <option value={school} />
               ))}
             </datalist>
-            {false ? (
+            {isSubmit ? (
               <input type="submit" className="submit" />
             ) : ('')}
           </StyledForm>
