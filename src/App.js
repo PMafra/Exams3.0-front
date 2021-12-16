@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import GlobalStyle from './assets/styles/GlobalStyle';
-import TransitionStyle from './assets/styles/TransitionStyle';
 import ExampleContext from './store/ExampleContext';
 
 export default function App() {
@@ -16,7 +15,6 @@ export default function App() {
     >
       <Router>
         <GlobalStyle />
-        <TransitionStyle />
         <AppRoutes />
       </Router>
     </ExampleContext.Provider>
