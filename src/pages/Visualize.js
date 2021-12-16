@@ -51,7 +51,7 @@ export default function Visualize() {
             <label htmlFor="filters" className="inputs-container">
               <h2>Select the filters:</h2>
               <div className="input-box">
-                <input list="schools" name="schools" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSchool(e.target.value)} />
+                <input placeholder="School" list="schools" name="schools" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSchool(e.target.value)} />
                 <IoCloseCircleOutline className="x-icon" onClick={() => window.location.reload()} />
               </div>
               {chosenSchool !== '' ? (
@@ -75,15 +75,15 @@ export default function Visualize() {
                   </StyledPublicButtonsContainer>
                   {isProfessorFilter ? (
                     <>
-                      <input list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
-                      <input list="types" name="types" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="Type" list="types" name="types" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                     </>
                   ) : ('')}
                   {isDisciplineFilter ? (
                     <>
-                      <input list="types" name="types" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
-                      <input list="disciplines" name="disciplines" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
-                      <input list="semesters" name="semesters" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="Type" list="types" name="types" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="Discipline" list="disciplines" name="disciplines" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="Semester" list="semesters" name="semesters" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                     </>
                   ) : ('')}
                 </>
