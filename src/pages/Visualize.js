@@ -1,8 +1,9 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-console */
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
-import { getFiltersInfo } from '../services/api';
+import { getSchools } from '../services/api';
 
 export default function Visualize() {
   const [schoolsList, setSchoolsList] = useState([]);
@@ -11,14 +12,12 @@ export default function Visualize() {
   const [typesList, setTypesList] = useState([]);
   const [semestersList, setSemestersList] = useState([]);
 
+  const [chosenSchool, setChosenSchool] = useState(false);
+
   const requestSchools = () => {
-    getFiltersInfo()
+    getSchools()
       .then((res) => {
-        setSchoolsList(res.data.schools);
-        setProfessorsList(res.data.professors);
-        setDisciplinesList(res.data.disciplines);
-        setTypesList(res.data.types);
-        setSemestersList(res.data.semesters);
+        setSchoolsList(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -29,21 +28,29 @@ export default function Visualize() {
     requestSchools();
   }, []);
 
+  const requestFilteredExams = (e) => {
+    e.PreventDefault();
+  };
+
   return (
     <StyledPageContainer>
       <StyledMainContent>
         <StyledFormContainer>
-          <StyledForm>
+          <StyledForm onSubmit={(e) => requestFilteredExams(e)}>
             <label htmlFor="filters" className="inputs-container">
               <h2>Select the filters:</h2>
-              <input list="schools" name="schools" id="filters" />
-              <input list="professors" name="professors" id="filters" />
-              <input list="types" name="types" id="filters" />
-              <input list="disciplines" name="disciplines" id="filters" />
-              <input list="semesters" name="semesters" id="filters" />
+              <input list="schools" name="schools" id="filters" type="text" onSelect={(e) => setChosenSchool(e.target.value)} />
+              {chosenSchool ? (
+                <>
+                  <input list="professors" name="professors" id="filters" type="text" />
+                  <input list="types" name="types" id="filters" type="text" />
+                  <input list="disciplines" name="disciplines" id="filters" type="text" />
+                  <input list="semesters" name="semesters" id="filters" type="text" />
+                </>
+              ) : ('')}
             </label>
             <datalist id="schools">
-              {schoolsList.map((school) => (
+              {schoolsList.map(({ school }) => (
                 <option value={school} />
               ))}
             </datalist>

@@ -8,8 +8,8 @@ const API_URL = 'http://localhost:4000';
 //   },
 // });
 
-const getFiltersInfo = () => axios.get(`${API_URL}/filters`);
+const getSchools = () => axios.get(`${API_URL}/filters/schools`);
 
 export {
-  getFiltersInfo,
+  getSchools,
 };
