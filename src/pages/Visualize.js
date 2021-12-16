@@ -39,13 +39,13 @@ export default function Visualize() {
           <StyledForm onSubmit={(e) => requestFilteredExams(e)}>
             <label htmlFor="filters" className="inputs-container">
               <h2>Select the filters:</h2>
-              <input list="schools" name="schools" id="filters" type="text" onSelect={(e) => setChosenSchool(e.target.value)} />
+              <input list="schools" name="schools" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSchool(e.target.value)} />
               {chosenSchool ? (
                 <>
-                  <input list="professors" name="professors" id="filters" type="text" />
-                  <input list="types" name="types" id="filters" type="text" />
-                  <input list="disciplines" name="disciplines" id="filters" type="text" />
-                  <input list="semesters" name="semesters" id="filters" type="text" />
+                  <input list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                  <input list="types" name="types" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                  <input list="disciplines" name="disciplines" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                  <input list="semesters" name="semesters" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                 </>
               ) : ('')}
             </label>
