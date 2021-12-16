@@ -1,27 +1,22 @@
+/* eslint-disable import/no-cycle */
 import styled from 'styled-components';
 import { FaEthereum } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 export default function MainPage() {
   return (
     <StyledPageContainer>
-      <StyledHeader>
-        <StyledTopLogoContainer>
-          EXAMS 3.0
-        </StyledTopLogoContainer>
-        <StyledTopBarContainer>
-          <StyledOption>About</StyledOption>
-          <StyledOption>Profile</StyledOption>
-          <StyledOption>Contacts</StyledOption>
-          <StyledOption>Home</StyledOption>
-        </StyledTopBarContainer>
-      </StyledHeader>
       <StyledMainContent>
         <StyledMainTextContainer>
           <p>Main TextMain TextMain TextMain TextMain TextMain TextMain TextMain TextMain Text</p>
         </StyledMainTextContainer>
         <StyledPublicButtonsContainer>
           <StyledButton>Send</StyledButton>
-          <StyledButton>Visualize</StyledButton>
+          <Link to="/visualize">
+            <StyledButton>
+              Visualize
+            </StyledButton>
+          </Link>
         </StyledPublicButtonsContainer>
         <StyledPublicButtonsContainer>
           <StyledButton className="login">
@@ -40,9 +35,6 @@ const StyledPageContainer = styled.div`
   width: 100vw;
   height: 100vh;
 `;
-const StyledHeader = styled.div`
-  position: fixed;
-`;
 const StyledMainContent = styled.div`
   position: absolute;
   top: 150px;
@@ -52,35 +44,6 @@ const StyledMainContent = styled.div`
   align-items: center;
   justify-content: center;
   gap: 5vh;
-`;
-const StyledTopLogoContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 120px;
-  font-size: 50px;
-  color: #ffffff;
-`;
-const StyledTopBarContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  gap: 2vw;
-`;
-const StyledOption = styled.div`
-  color: #ffffff;
-  font-size: 18px;
-  height: 33px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 0 15px;
-  cursor: pointer;
-  &:hover {
-    background-color: #bfbafc;
-    border-radius: 60px;
-  }
 `;
 const StyledMainTextContainer = styled.div`
   width: 100vw;
@@ -130,3 +93,10 @@ const EtherIcon = styled(FaEthereum)`
   font-size: 40px;
   color: #434871;
 `;
+
+export {
+  StyledPublicButtonsContainer,
+  StyledButton,
+  StyledPageContainer,
+  StyledMainContent,
+};
