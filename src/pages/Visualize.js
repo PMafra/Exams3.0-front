@@ -4,19 +4,21 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { IoCloseCircleOutline } from 'react-icons/io5';
-import { getSchools, getCategories, getProfessorsBySchool } from '../services/api';
+import {
+  getSchools, getCategories, getProfessorsBySchool, getSubjectsBySchool,
+} from '../services/api';
 
 export default function Visualize() {
   const [schoolsList, setSchoolsList] = useState([]);
   const [professorsList, setProfessorsList] = useState([]);
-  const [disciplinesList, setDisciplinesList] = useState([]);
+  const [subjectsList, setSubjectsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
   const [semestersList, setSemestersList] = useState([]);
 
   const [chosenSchool, setChosenSchool] = useState('');
 
   const [isProfessorFilter, setIsProfessorFilter] = useState(true);
-  const [isDisciplineFilter, setIsDisciplineFilter] = useState(false);
+  const [isSubjectFilter, setIsSubjectFilter] = useState(false);
 
   const [isSubmit, setIsSubmit] = useState(false);
 
@@ -52,6 +54,19 @@ export default function Visualize() {
         console.log(err);
       });
   };
+  const requestSubjectsBySchool = () => {
+    const body = {
+      chosenSchool,
+    };
+    getSubjectsBySchool(body)
+      .then((res) => {
+        console.log(res);
+        setSubjectsList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     requestSchools();
@@ -60,6 +75,7 @@ export default function Visualize() {
 
   useEffect(() => {
     requestProfessorsBySchool();
+    requestSubjectsBySchool();
   }, [chosenSchool]);
 
   const requestFilteredExams = (e) => {
@@ -68,7 +84,7 @@ export default function Visualize() {
 
   const defineFilter = () => {
     setIsProfessorFilter(!isProfessorFilter);
-    setIsDisciplineFilter(!isDisciplineFilter);
+    setIsSubjectFilter(!isSubjectFilter);
   };
 
   return (
@@ -85,7 +101,7 @@ export default function Visualize() {
               {chosenSchool !== '' ? (
                 <>
                   <StyledPublicButtonsContainer
-                    isDisciplineFilter={isDisciplineFilter}
+                    isSubjectFilter={isSubjectFilter}
                     isProfessorFilter={isProfessorFilter}
                   >
                     <StyledButton
@@ -95,10 +111,10 @@ export default function Visualize() {
                       Filter by professor
                     </StyledButton>
                     <StyledButton
-                      className="discipline"
+                      className="subject"
                       onClick={() => defineFilter()}
                     >
-                      Filter by discipline
+                      Filter by subject
                     </StyledButton>
                   </StyledPublicButtonsContainer>
                   {isProfessorFilter ? (
@@ -107,9 +123,9 @@ export default function Visualize() {
                       <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                     </>
                   ) : ('')}
-                  {isDisciplineFilter ? (
+                  {isSubjectFilter ? (
                     <>
-                      <input placeholder="Discipline" list="disciplines" name="disciplines" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                       <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                       <input placeholder="Semester" list="semesters" name="semesters" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                     </>
@@ -127,9 +143,9 @@ export default function Visualize() {
                 <option value={professor} />
               ))}
             </datalist>
-            <datalist id="disciplines">
-              {disciplinesList.map((school) => (
-                <option value={school} />
+            <datalist id="subjects">
+              {subjectsList.map(({ subject }) => (
+                <option value={subject} />
               ))}
             </datalist>
             <datalist id="categories">
@@ -237,8 +253,8 @@ const StyledPublicButtonsContainer = styled.div`
   .professor {
     background-color: ${({ isProfessorFilter }) => (isProfessorFilter ? ('#bfbafc') : ('#878787'))};
   }
-  .discipline {
-    background-color: ${({ isDisciplineFilter }) => (isDisciplineFilter ? ('#bfbafc') : ('#878787'))};
+  .subject {
+    background-color: ${({ isSubjectFilter }) => (isSubjectFilter ? ('#bfbafc') : ('#878787'))};
   }
 `;
 const StyledButton = styled.div`
