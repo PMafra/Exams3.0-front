@@ -1,26 +1,35 @@
+/* eslint-disable react/jsx-no-duplicate-props */
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-console */
 import styled from 'styled-components';
-import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import { useState, useEffect, useContext } from 'react';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import {
   getSchools, getCategories, getProfessorsBySchool, getSubjectsBySchool,
 } from '../services/api';
+import FiltersContext from '../store/FiltersContext';
 
-export default function Visualize() {
+export default function Filters() {
   const [schoolsList, setSchoolsList] = useState([]);
   const [professorsList, setProfessorsList] = useState([]);
   const [subjectsList, setSubjectsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
-  const [semestersList, setSemestersList] = useState([]);
 
   const [chosenSchool, setChosenSchool] = useState('');
+  const [chosenProfessor, setChosenProfessor] = useState('');
+  const [chosenCategory, setChosenCategory] = useState('');
+  const [chosenSubject, setChosenSubject] = useState('');
 
   const [isProfessorFilter, setIsProfessorFilter] = useState(true);
   const [isSubjectFilter, setIsSubjectFilter] = useState(false);
 
   const [isSubmit, setIsSubmit] = useState(false);
+
+  const { setFilters } = useContext(FiltersContext);
+
+  console.log({ chosenProfessor, chosenCategory, chosenSubject });
 
   const requestSchools = () => {
     getSchools()
@@ -34,7 +43,6 @@ export default function Visualize() {
   const requestCategories = () => {
     getCategories()
       .then((res) => {
-        console.log(res.data);
         setCategoriesList(res.data);
       })
       .catch((err) => {
@@ -47,7 +55,6 @@ export default function Visualize() {
     };
     getProfessorsBySchool(body)
       .then((res) => {
-        console.log(res);
         setProfessorsList(res.data);
       })
       .catch((err) => {
@@ -60,7 +67,6 @@ export default function Visualize() {
     };
     getSubjectsBySchool(body)
       .then((res) => {
-        console.log(res);
         setSubjectsList(res.data);
       })
       .catch((err) => {
@@ -85,6 +91,24 @@ export default function Visualize() {
   const defineFilter = () => {
     setIsProfessorFilter(!isProfessorFilter);
     setIsSubjectFilter(!isSubjectFilter);
+    setChosenSubject('');
+    setChosenCategory('');
+    setChosenProfessor('');
+    setIsSubmit(false);
+  };
+
+  if ((chosenProfessor && chosenCategory && !isSubmit)
+    || (chosenSubject && chosenCategory && !isSubmit)) {
+    setIsSubmit(true);
+  }
+
+  const submitRequest = () => {
+    setFilters({
+      chosenSchool,
+      chosenCategory,
+      chosenProfessor,
+      chosenSubject,
+    });
   };
 
   return (
@@ -119,15 +143,14 @@ export default function Visualize() {
                   </StyledPublicButtonsContainer>
                   {isProfessorFilter ? (
                     <>
-                      <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
-                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
+                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
                     </>
                   ) : ('')}
                   {isSubjectFilter ? (
                     <>
-                      <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
-                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
-                      <input placeholder="Semester" list="semesters" name="semesters" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSubject(e.target.value)} />
+                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
                     </>
                   ) : ('')}
                 </>
@@ -153,13 +176,10 @@ export default function Visualize() {
                 <option value={category} />
               ))}
             </datalist>
-            <datalist id="semesters">
-              {semestersList.map((school) => (
-                <option value={school} />
-              ))}
-            </datalist>
             {isSubmit ? (
-              <input type="submit" className="submit" />
+              <Link to="/visualize/exams" onClick={() => submitRequest()}>
+                <input type="submit" className="submit" />
+              </Link>
             ) : ('')}
           </StyledForm>
         </StyledFormContainer>
@@ -192,7 +212,7 @@ const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 10vh;
+  gap: 7vh;
   .inputs-container {
     display: flex;
     flex-direction: column;

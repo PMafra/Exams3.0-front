@@ -3,20 +3,20 @@ import { useState } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import AppRoutes from './AppRoutes';
 import GlobalStyle from './assets/styles/GlobalStyle';
-import ExampleContext from './store/ExampleContext';
+import FiltersContext from './store/FiltersContext';
 
 export default function App() {
-  const [example, setExample] = useState('');
+  const [filters, setFilters] = useState('');
 
   return (
-    <ExampleContext.Provider value={{
-      example, setExample,
+    <FiltersContext.Provider value={{
+      filters, setFilters,
     }}
     >
       <Router>
         <GlobalStyle />
         <AppRoutes />
       </Router>
-    </ExampleContext.Provider>
+    </FiltersContext.Provider>
   );
 }

@@ -1,7 +1,8 @@
 import { Routes, Route, useLocation } from 'react-router-dom';
 import MainPage from './pages/MainPage';
-import Visualize from './pages/Visualize';
+import Filters from './pages/Filters';
 import Navbar from './components/Navbar';
+import Exams from './pages/Exams';
 
 export default function AppRoutes() {
   const location = useLocation();
@@ -11,7 +12,8 @@ export default function AppRoutes() {
       <Navbar />
       <Routes location={location}>
         <Route exact path="/" element={<MainPage />} />
-        <Route exact path="/visualize" element={<Visualize />} />
+        <Route exact path="/visualize" element={<Filters />} />
+        <Route exact path="/visualize/exams" element={<Exams />} />
       </Routes>
     </>
   );
