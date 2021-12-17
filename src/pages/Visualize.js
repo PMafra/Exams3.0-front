@@ -4,13 +4,13 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { IoCloseCircleOutline } from 'react-icons/io5';
-import { getSchools } from '../services/api';
+import { getSchools, getCategories } from '../services/api';
 
 export default function Visualize() {
   const [schoolsList, setSchoolsList] = useState([]);
   const [professorsList, setProfessorsList] = useState([]);
   const [disciplinesList, setDisciplinesList] = useState([]);
-  const [typesList, setTypesList] = useState([]);
+  const [categoriesList, setCategoriesList] = useState([]);
   const [semestersList, setSemestersList] = useState([]);
 
   const [chosenSchool, setChosenSchool] = useState('');
@@ -29,9 +29,30 @@ export default function Visualize() {
         console.log(err);
       });
   };
+  const requestCategories = () => {
+    getCategories()
+      .then((res) => {
+        console.log(res.data);
+        setCategoriesList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  const requestProfessorsByUniversity = () => {
+    getCategories()
+      .then((res) => {
+        console.log(res.data);
+        setCategoriesList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   useEffect(() => {
     requestSchools();
+    requestCategories();
   }, []);
 
   const requestFilteredExams = (e) => {
@@ -76,13 +97,13 @@ export default function Visualize() {
                   {isProfessorFilter ? (
                     <>
                       <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
-                      <input placeholder="Type" list="types" name="types" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                     </>
                   ) : ('')}
                   {isDisciplineFilter ? (
                     <>
-                      <input placeholder="Type" list="types" name="types" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                       <input placeholder="Discipline" list="disciplines" name="disciplines" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
+                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                       <input placeholder="Semester" list="semesters" name="semesters" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} />
                     </>
                   ) : ('')}
@@ -104,9 +125,9 @@ export default function Visualize() {
                 <option value={school} />
               ))}
             </datalist>
-            <datalist id="types">
-              {typesList.map((school) => (
-                <option value={school} />
+            <datalist id="categories">
+              {categoriesList.map(({ category }) => (
+                <option value={category} />
               ))}
             </datalist>
             <datalist id="semesters">
@@ -168,6 +189,7 @@ const StyledForm = styled.form`
     .x-icon {
       font-size: 45px;
       color: red;
+      cursor: pointer;
     }
     }
   }

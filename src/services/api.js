@@ -9,7 +9,9 @@ const API_URL = 'http://localhost:4000';
 // });
 
 const getSchools = () => axios.get(`${API_URL}/filters/schools`);
+const getCategories = () => axios.get(`${API_URL}/filters/categories`);
 
 export {
   getSchools,
+  getCategories,
 };
