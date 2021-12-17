@@ -80,7 +80,7 @@ export default function Exams() {
               exam.title.split('-')[0] === chosenPeriod ? (
                 <StyledExamBox>
                   <StyledExam><h3>{exam.title}</h3></StyledExam>
-                  <StyledExam><span>{exam.link}</span></StyledExam>
+                  <StyledExam><a href={exam.link} target="_blanck">{exam.link}</a></StyledExam>
                 </StyledExamBox>
               ) : ('')
             ))}
@@ -158,8 +158,12 @@ const StyledExam = styled.span`
     h3 {
         font-size: 25px;
     }
-    span {
+    a {
+        color: #ffffff;
         font-size: 20px;
+        :hover {
+            color: green;
+        }
     }
 `;
 const StyledPeriod = styled.span`
