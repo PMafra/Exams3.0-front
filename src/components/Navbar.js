@@ -1,6 +1,9 @@
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 export default function Navbar() {
+  const navigate = useNavigate();
+
   return (
     <StyledHeader>
       <StyledTopLogoContainer>
@@ -9,8 +12,7 @@ export default function Navbar() {
       <StyledTopBarContainer>
         <StyledOption>About</StyledOption>
         <StyledOption>Profile</StyledOption>
-        <StyledOption>Contacts</StyledOption>
-        <StyledOption>Home</StyledOption>
+        <StyledOption onClick={() => navigate('/')}>Home</StyledOption>
       </StyledTopBarContainer>
     </StyledHeader>
   );
