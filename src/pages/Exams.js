@@ -1,7 +1,11 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import styled from 'styled-components';
-import { useEffect, useContext, useState } from 'react';
+import { IoArrowBackCircleSharp } from 'react-icons/io5';
+import {
+  useEffect, useContext, useState,
+} from 'react';
+import { useNavigate } from 'react-router-dom';
 import FiltersContext from '../store/FiltersContext';
 import { getExams } from '../services/api';
 
@@ -10,6 +14,7 @@ export default function Exams() {
   const [periods, setPeriods] = useState([]);
   const [chosenPeriod, setChosenPeriod] = useState('');
   const { filters } = useContext(FiltersContext);
+  const navigate = useNavigate();
 
   const definePeriods = (allExams) => {
     const newPeriods = [];
@@ -38,10 +43,24 @@ export default function Exams() {
     requestFilteredExams();
   }, []);
 
-  console.log(exams);
+  const backScreen = () => {
+    if (chosenPeriod) {
+      setChosenPeriod('');
+    } else {
+      navigate('/visualize');
+    }
+  };
+
   return (
     <StyledPageContainer>
       <StyledMainContent>
+        <StyledBackButtonContainer>
+          <StyledBackButton>
+            <StyledBackIcon onClick={() => backScreen()}>
+              Back
+            </StyledBackIcon>
+          </StyledBackButton>
+        </StyledBackButtonContainer>
         <StyledTitle>
           {filters.chosenProfessor ? (
             filters.chosenProfessor
@@ -78,15 +97,30 @@ const StyledPageContainer = styled.div`
   width: 100vw;
   height: 100vh;
 `;
+const StyledBackButtonContainer = styled.div`
+    width: 100vw;
+    display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3vh;
+`;
+const StyledBackButton = styled.div`
+    width: 100vw;
+    max-width: 600px;
+    height: 50px;
+`;
+const StyledBackIcon = styled(IoArrowBackCircleSharp)`
+    font-size: 50px;
+    cursor: pointer;
+`;
 const StyledMainContent = styled.div`
   position: absolute;
   top: 150px;
   height: calc(100vh - 150px);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5vh;
+  gap: 2vh;
 `;
 const StyledTitle = styled.h2`
     text-align: center;
@@ -120,6 +154,7 @@ const StyledExamBox = styled.div`
 `;
 const StyledExam = styled.span`
     color: #ffffff;
+    max-width: 850px;
     h3 {
         font-size: 25px;
     }
