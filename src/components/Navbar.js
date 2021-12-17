@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 export default function Navbar() {
@@ -8,9 +7,7 @@ export default function Navbar() {
         EXAMS 3.0
       </StyledTopLogoContainer>
       <StyledTopBarContainer>
-        <Link to="/visualize">
-          <StyledOption>About</StyledOption>
-        </Link>
+        <StyledOption>About</StyledOption>
         <StyledOption>Profile</StyledOption>
         <StyledOption>Contacts</StyledOption>
         <StyledOption>Home</StyledOption>
@@ -30,6 +27,7 @@ const StyledTopLogoContainer = styled.div`
   height: 120px;
   font-size: 50px;
   color: #ffffff;
+  font-style: italic;
 `;
 const StyledTopBarContainer = styled.div`
   width: 100vw;

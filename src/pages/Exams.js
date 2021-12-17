@@ -1,10 +1,22 @@
+/* eslint-disable no-console */
 import styled from 'styled-components';
+import { useEffect, useContext } from 'react';
+import FiltersContext from '../store/FiltersContext';
 
-export default function Visualize() {
+export default function Exams() {
+  const { filters } = useContext(FiltersContext);
+  console.log(filters);
+  const requestFilteredExams = () => {
+
+  };
+
+  useEffect(() => {
+    requestFilteredExams();
+  }, []);
   return (
     <StyledPageContainer>
       <StyledMainContent>
-        sdfjnsodafjnsod
+        oi
       </StyledMainContent>
     </StyledPageContainer>
   );
