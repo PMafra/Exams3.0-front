@@ -4,7 +4,7 @@
 import styled from 'styled-components';
 import { useState, useEffect } from 'react';
 import { IoCloseCircleOutline } from 'react-icons/io5';
-import { getSchools, getCategories } from '../services/api';
+import { getSchools, getCategories, getProfessorsBySchool } from '../services/api';
 
 export default function Visualize() {
   const [schoolsList, setSchoolsList] = useState([]);
@@ -39,11 +39,14 @@ export default function Visualize() {
         console.log(err);
       });
   };
-  const requestProfessorsByUniversity = () => {
-    getCategories()
+  const requestProfessorsBySchool = () => {
+    const body = {
+      chosenSchool,
+    };
+    getProfessorsBySchool(body)
       .then((res) => {
-        console.log(res.data);
-        setCategoriesList(res.data);
+        console.log(res);
+        setProfessorsList(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -54,6 +57,10 @@ export default function Visualize() {
     requestSchools();
     requestCategories();
   }, []);
+
+  useEffect(() => {
+    requestProfessorsBySchool();
+  }, [chosenSchool]);
 
   const requestFilteredExams = (e) => {
     e.PreventDefault();
@@ -116,8 +123,8 @@ export default function Visualize() {
               ))}
             </datalist>
             <datalist id="professors">
-              {professorsList.map((school) => (
-                <option value={school} />
+              {professorsList.map(({ professor }) => (
+                <option value={professor} />
               ))}
             </datalist>
             <datalist id="disciplines">
