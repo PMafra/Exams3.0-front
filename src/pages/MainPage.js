@@ -2,16 +2,16 @@
 import styled from 'styled-components';
 import { FaEthereum } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
-import { StyledPageContainer, StyledMainContent } from '../assets/styles/PageContainerStyle';
+import { StyledPageContainer, StyledMainContent, StyledGenericContainer } from '../assets/styles/PageContainerStyle';
 import { StyledPublicButtonsContainer, StyledButton } from '../assets/styles/ButtonStyle';
 
 export default function MainPage() {
   return (
     <StyledPageContainer>
       <StyledMainContent className="main">
-        <StyledMainTextContainer>
-          <p>The best exams database underground website</p>
-        </StyledMainTextContainer>
+        <StyledGenericContainer>
+          <StyledMainText>The best exams database underground website</StyledMainText>
+        </StyledGenericContainer>
         <StyledPublicButtonsContainer>
           <Link to="/send">
             <StyledButton className="main">
@@ -34,12 +34,7 @@ export default function MainPage() {
   );
 }
 
-const StyledMainTextContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  p {
+const StyledMainText = styled.p`
     font-size: 55px;
     color:#ffffff;
     font-weight: 700;
@@ -48,9 +43,7 @@ const StyledMainTextContainer = styled.div`
     letter-spacing: 3px;
     text-align: center;
     max-width: 1300px;
-  }
 `;
-
 const EtherIcon = styled(FaEthereum)`
   font-size: 40px;
   color: #434871;

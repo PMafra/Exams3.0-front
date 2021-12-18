@@ -7,7 +7,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import FiltersContext from '../store/FiltersContext';
 import { getExams } from '../services/api';
-import { StyledPageContainer, StyledMainContent } from '../assets/styles/PageContainerStyle';
+import { StyledPageContainer, StyledMainContent, StyledGenericContainer } from '../assets/styles/PageContainerStyle';
 import { StyledButton, StyledPublicButtonsContainer } from '../assets/styles/ButtonStyle';
 import Exam from '../components/Exam';
 import BackButton from '../components/BackButton';
@@ -93,13 +93,6 @@ export default function Exams() {
   );
 }
 
-const StyledGenericContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
 const StyledTitle = styled.h2`
   text-align: center;
   width: 100vw;

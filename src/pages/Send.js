@@ -248,9 +248,7 @@ export default function Send() {
                   <CountdownCircleTimer
                     isPlaying
                     duration={5}
-                    colors={[
-                      ['#ffffff'],
-                    ]}
+                    colors={[['#ffffff']]}
                     size={70}
                     trailColor="#271D42"
                     strokeWidth={4}
