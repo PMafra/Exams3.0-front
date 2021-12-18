@@ -148,22 +148,69 @@ export default function Send() {
             <label htmlFor="filters" className="inputs-container">
               <h2>Select the options:</h2>
               <div className="input-box">
-                <input placeholder="School" list="schools" name="schools" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSchool(e.target.value)} />
-                <IoCloseCircleOutline className="x-icon" onClick={() => window.location.reload()} />
+                <input
+                  placeholder="School"
+                  list="schools"
+                  name="schools"
+                  id="filters"
+                  type="text"
+                  onKeyDown={(e) => e.preventDefault()}
+                  onSelect={(e) => setChosenSchool(e.target.value)}
+                />
+                <IoCloseCircleOutline
+                  className="x-icon"
+                  onClick={() => window.location.reload()}
+                />
               </div>
               {chosenSchool ? (
                 <>
-                  <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
-                  <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSubject(e.target.value)} />
+                  <input
+                    placeholder="Category"
+                    list="categories"
+                    name="categories"
+                    id="filters"
+                    type="text"
+                    onKeyDown={(e) => e.preventDefault()}
+                    onSelect={(e) => setChosenCategory(e.target.value)}
+                  />
+                  <input
+                    placeholder="subject"
+                    list="subjects"
+                    name="subjects"
+                    id="filters"
+                    type="text"
+                    onKeyDown={(e) => e.preventDefault()}
+                    onSelect={(e) => setChosenSubject(e.target.value)}
+                  />
                 </>
               ) : ('')}
               {chosenSubject ? (
-                <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
+                <input
+                  placeholder="Professor"
+                  list="professors"
+                  name="professors"
+                  id="filters"
+                  type="text"
+                  onKeyDown={(e) => e.preventDefault()}
+                  onSelect={(e) => setChosenProfessor(e.target.value)}
+                />
               ) : ('')}
               {chosenProfessor ? (
                 <>
-                  <input placeholder="Exam url" id="url" type="text" onChange={(e) => setNewExamUrl(e.target.value)} required />
-                  <input placeholder="Exam title" id="title" type="text" onChange={(e) => setNewExamTitle(e.target.value)} required />
+                  <input
+                    placeholder="Exam url"
+                    id="url"
+                    type="text"
+                    onChange={(e) => setNewExamUrl(e.target.value)}
+                    required
+                  />
+                  <input
+                    placeholder="Exam title"
+                    id="title"
+                    type="text"
+                    onChange={(e) => setNewExamTitle(e.target.value)}
+                    required
+                  />
                 </>
               ) : ('')}
             </label>

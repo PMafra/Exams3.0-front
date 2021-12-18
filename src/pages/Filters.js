@@ -117,10 +117,21 @@ export default function Filters() {
             <label htmlFor="filters" className="inputs-container">
               <h2>Select the filters:</h2>
               <div className="input-box">
-                <input placeholder="School" list="schools" name="schools" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSchool(e.target.value)} />
-                <IoCloseCircleOutline className="x-icon" onClick={() => window.location.reload()} />
+                <input
+                  placeholder="School"
+                  list="schools"
+                  name="schools"
+                  id="filters"
+                  type="text"
+                  onKeyDown={(e) => e.preventDefault()}
+                  onSelect={(e) => setChosenSchool(e.target.value)}
+                />
+                <IoCloseCircleOutline
+                  className="x-icon"
+                  onClick={() => window.location.reload()}
+                />
               </div>
-              {chosenSchool !== '' ? (
+              {chosenSchool ? (
                 <>
                   <StyledPublicButtonsContainer
                     isSubjectFilter={isSubjectFilter}
@@ -141,14 +152,46 @@ export default function Filters() {
                   </StyledPublicButtonsContainer>
                   {isProfessorFilter ? (
                     <>
-                      <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
-                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
+                      <input
+                        placeholder="Professor"
+                        list="professors"
+                        name="professors"
+                        id="filters"
+                        type="text"
+                        onKeyDown={(e) => e.preventDefault()}
+                        onSelect={(e) => setChosenProfessor(e.target.value)}
+                      />
+                      <input
+                        placeholder="Category"
+                        list="categories"
+                        name="categories"
+                        id="filters"
+                        type="text"
+                        onKeyDown={(e) => e.preventDefault()}
+                        onSelect={(e) => setChosenCategory(e.target.value)}
+                      />
                     </>
                   ) : ('')}
                   {isSubjectFilter ? (
                     <>
-                      <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSubject(e.target.value)} />
-                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
+                      <input
+                        placeholder="subject"
+                        list="subjects"
+                        name="subjects"
+                        id="filters"
+                        type="text"
+                        onKeyDown={(e) => e.preventDefault()}
+                        onSelect={(e) => setChosenSubject(e.target.value)}
+                      />
+                      <input
+                        placeholder="Category"
+                        list="categories"
+                        name="categories"
+                        id="filters"
+                        type="text"
+                        onKeyDown={(e) => e.preventDefault()}
+                        onSelect={(e) => setChosenCategory(e.target.value)}
+                      />
                     </>
                   ) : ('')}
                 </>

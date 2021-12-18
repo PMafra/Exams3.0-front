@@ -27,6 +27,21 @@ const StyledMainContent = styled.div`
   position: absolute;
   top: 150px;
   height: calc(100vh - 150px);
+  .main {
+    margin-top: 3vh;
+  }
+  .exams {
+    gap: 5vh;
+    text-align: left;
+  }
+  .no-content {
+    text-align: center;
+    gap: 6vh;
+    p {
+        font-size: 25px;
+        color: #ffffff;
+    }
+  }
 `;
 
 export {
