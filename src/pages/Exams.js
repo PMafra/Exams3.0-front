@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import FiltersContext from '../store/FiltersContext';
 import { getExams } from '../services/api';
 import { StyledPageContainer, StyledMainContent } from '../assets/styles/PageContainerStyle';
+import { StyledButton } from '../assets/styles/ButtonStyle';
 
 export default function Exams() {
   const [exams, setExams] = useState([]);
@@ -96,7 +97,7 @@ export default function Exams() {
                 filters.chosenSubject
               )}`}
             </p>
-            <StyledButton onClick={() => navigate('/send')}>
+            <StyledButton className="main" onClick={() => navigate('/send')}>
               Send an exam
             </StyledButton>
           </StyledNoContentContainer>
@@ -189,22 +190,4 @@ const StyledNoContentContainer = styled.div`
         font-size: 25px;
         color: #ffffff;
     }
-`;
-const StyledButton = styled.div`
-  padding: 0 20px;
-  width: 200px;
-  height:70px;
-  border-radius: 60px;
-  background-color: #bfbafc;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  text-align: center;
-  &:hover {
-    opacity: 0.8;
-  }
 `;

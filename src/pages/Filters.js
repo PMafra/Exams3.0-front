@@ -2,7 +2,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-console */
-import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import { IoCloseCircleOutline } from 'react-icons/io5';
@@ -11,6 +10,8 @@ import {
 } from '../services/api';
 import FiltersContext from '../store/FiltersContext';
 import { StyledPageContainer, StyledMainContent } from '../assets/styles/PageContainerStyle';
+import { StyledPublicButtonsContainer, StyledButton } from '../assets/styles/ButtonStyle';
+import { StyledFormContainer, StyledForm } from '../assets/styles/FormsStyle';
 
 export default function Filters() {
   const [schoolsList, setSchoolsList] = useState([]);
@@ -175,7 +176,7 @@ export default function Filters() {
             </datalist>
             {isSubmit ? (
               <Link to="/visualize/exams" onClick={() => submitRequest()}>
-                <input type="submit" className="submit" />
+                <input type="submit" className="submit-button" />
               </Link>
             ) : ('')}
           </StyledForm>
@@ -184,94 +185,3 @@ export default function Filters() {
     </StyledPageContainer>
   );
 }
-
-const StyledFormContainer = styled.div`
-  width: 100vw;
-`;
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 7vh;
-  .inputs-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5vh;
-    h2 {
-      color: #ffffff;
-      font-size: 30px;
-      margin-bottom:2vh;
-    }
-    .input-box {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
-    .x-icon {
-      font-size: 45px;
-      color: red;
-      cursor: pointer;
-    }
-    }
-  }
-  input {
-      width: 350px;
-      height: 40px;
-      border-radius: 20px;
-      border: none;
-      padding: 0 15px;
-      font-size: 20px;
-      :focus {
-        outline: none;
-      }
-    }
-  .submit {
-    width: 200px;
-    height:70px;
-    border-radius: 60px;
-    background-color: #bfbafc;
-    font-size: 20px;
-    font-weight: 700;
-    color: #ffffff;
-    cursor: pointer;
-    border: none;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-`;
-const StyledPublicButtonsContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  gap: 18vw;
-  .login {
-    color: #434871;
-  }
-  .professor {
-    background-color: ${({ isProfessorFilter }) => (isProfessorFilter ? ('#bfbafc') : ('#878787'))};
-  }
-  .subject {
-    background-color: ${({ isSubjectFilter }) => (isSubjectFilter ? ('#bfbafc') : ('#878787'))};
-  }
-`;
-const StyledButton = styled.div`
-  padding: 0 20px;
-  width: 200px;
-  height:70px;
-  border-radius: 60px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  text-align: center;
-  &:hover {
-    opacity: 0.8;
-  }
-`;
