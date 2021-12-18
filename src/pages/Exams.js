@@ -86,6 +86,20 @@ export default function Exams() {
             ))}
           </StyledExamsContainer>
         )}
+        {exams.length === 0 ? (
+          <StyledNoContentContainer>
+            <p>
+              {`We still dont have ${filters.chosenCategory} exams of ${filters.chosenProfessor ? (
+                filters.chosenProfessor
+              ) : (
+                filters.chosenSubject
+              )}`}
+            </p>
+            <StyledButton onClick={() => navigate('/send')}>
+              Send an exam
+            </StyledButton>
+          </StyledNoContentContainer>
+        ) : ('')}
       </StyledMainContent>
     </StyledPageContainer>
   );
@@ -175,4 +189,35 @@ const StyledPeriod = styled.span`
         text-decoration: underline;
         text-underline-offset: 5px;
     }
+`;
+const StyledNoContentContainer = styled.div`
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6vh;
+    p {
+        font-size: 25px;
+        color: #ffffff;
+    }
+`;
+const StyledButton = styled.div`
+  padding: 0 20px;
+  width: 200px;
+  height:70px;
+  border-radius: 60px;
+  background-color: #bfbafc;
+  font-size: 20px;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+  &:hover {
+    opacity: 0.8;
+  }
 `;

@@ -1,35 +1,35 @@
-/* eslint-disable react/jsx-no-duplicate-props */
-/* eslint-disable no-unused-vars */
+/* eslint-disable no-plusplus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-console */
+/* eslint-disable no-unused-vars */
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-import { useState, useEffect, useContext } from 'react';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import {
-  getSchools, getCategories, getProfessorsByFilter, getSubjectsByFilter,
+  getSchools, getCategories, getProfessorsByFilter, getSubjectsByFilter, sendNewExam,
 } from '../services/api';
-import FiltersContext from '../store/FiltersContext';
 
-export default function Filters() {
+export default function Send() {
   const [schoolsList, setSchoolsList] = useState([]);
-  const [professorsList, setProfessorsList] = useState([]);
-  const [subjectsList, setSubjectsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
+  const [subjectsList, setSubjectsList] = useState([]);
+  const [professorsList, setProfessorsList] = useState([]);
 
   const [chosenSchool, setChosenSchool] = useState('');
   const [chosenProfessor, setChosenProfessor] = useState('');
   const [chosenCategory, setChosenCategory] = useState('');
   const [chosenSubject, setChosenSubject] = useState('');
 
-  const [isProfessorFilter, setIsProfessorFilter] = useState(true);
-  const [isSubjectFilter, setIsSubjectFilter] = useState(false);
+  const [newExamTitle, setNewExamTitle] = useState('');
+  const [newExamUrl, setNewExamUrl] = useState('');
 
   const [isSubmit, setIsSubmit] = useState(false);
 
-  const { setFilters } = useContext(FiltersContext);
-
-  console.log({ chosenProfessor, chosenCategory, chosenSubject });
+  const [isFinished, setIsFinished] = useState(false);
 
   const requestSchools = () => {
     getSchools()
@@ -49,18 +49,6 @@ export default function Filters() {
         console.log(err);
       });
   };
-  const requestProfessorsBySchool = () => {
-    const body = {
-      chosenSchool,
-    };
-    getProfessorsByFilter(body)
-      .then((res) => {
-        setProfessorsList(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
   const requestSubjectsBySchool = () => {
     const body = {
       chosenSchool,
@@ -74,38 +62,81 @@ export default function Filters() {
       });
   };
 
+  const requestProfessorsBySchoolAndSubject = () => {
+    const body = {
+      chosenSchool,
+      chosenSubject,
+    };
+    getProfessorsByFilter(body)
+      .then((res) => {
+        setProfessorsList(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   useEffect(() => {
     requestSchools();
     requestCategories();
   }, []);
 
   useEffect(() => {
-    requestProfessorsBySchool();
     requestSubjectsBySchool();
   }, [chosenSchool]);
 
-  const defineFilter = () => {
-    setIsProfessorFilter(!isProfessorFilter);
-    setIsSubjectFilter(!isSubjectFilter);
-    setChosenSubject('');
-    setChosenCategory('');
-    setChosenProfessor('');
-    setIsSubmit(false);
+  useEffect(() => {
+    requestProfessorsBySchoolAndSubject();
+  }, [chosenSubject]);
+
+  const validateUrlExtension = () => {
+    const extensions = ['doc', 'docx', 'html', 'htm', 'odt', 'pdf', 'xls', 'xlsx', 'ods', 'ppt', 'pptx', 'txt'];
+    const urlArray = newExamUrl.split('.');
+    const extension = urlArray[urlArray.length - 1];
+    for (let i = 0; i < extensions.length; i++) {
+      if (extension === `${extensions[i]}`) {
+        return true;
+      }
+    }
+    return false;
   };
 
-  if ((chosenProfessor && chosenCategory && !isSubmit)
-    || (chosenSubject && chosenCategory && !isSubmit)) {
-    setIsSubmit(true);
-  }
+  const validateTitle = () => {
+    if (newExamTitle.split('-').length === 2) {
+      return true;
+    }
+    return false;
+  };
 
   const submitRequest = () => {
-    setFilters({
-      chosenSchool,
-      chosenCategory,
-      chosenProfessor,
-      chosenSubject,
-    });
+    const isValidUrl = validateUrlExtension();
+    const isValidTitle = validateTitle();
+    if (isValidUrl && isValidTitle) {
+      console.log('finalizou');
+
+      const newExam = {
+        newExamTitle,
+        newExamUrl,
+        chosenCategory,
+        chosenProfessor,
+        chosenSubject,
+        chosenSchool,
+      };
+
+      sendNewExam(newExam)
+        .then((res) => {
+          console.log(res.data);
+          setIsFinished(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   };
+
+  if (chosenProfessor && chosenCategory && chosenSubject && !isSubmit) {
+    setIsSubmit(true);
+  }
 
   return (
     <StyledPageContainer>
@@ -113,42 +144,24 @@ export default function Filters() {
         <StyledFormContainer>
           <StyledForm>
             <label htmlFor="filters" className="inputs-container">
-              <h2>Select the filters:</h2>
+              <h2>Select the options:</h2>
               <div className="input-box">
                 <input placeholder="School" list="schools" name="schools" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSchool(e.target.value)} />
                 <IoCloseCircleOutline className="x-icon" onClick={() => window.location.reload()} />
               </div>
-              {chosenSchool !== '' ? (
+              {chosenSchool ? (
                 <>
-                  <StyledPublicButtonsContainer
-                    isSubjectFilter={isSubjectFilter}
-                    isProfessorFilter={isProfessorFilter}
-                  >
-                    <StyledButton
-                      className="professor"
-                      onClick={() => defineFilter()}
-                    >
-                      Filter by professor
-                    </StyledButton>
-                    <StyledButton
-                      className="subject"
-                      onClick={() => defineFilter()}
-                    >
-                      Filter by subject
-                    </StyledButton>
-                  </StyledPublicButtonsContainer>
-                  {isProfessorFilter ? (
-                    <>
-                      <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
-                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
-                    </>
-                  ) : ('')}
-                  {isSubjectFilter ? (
-                    <>
-                      <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSubject(e.target.value)} />
-                      <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
-                    </>
-                  ) : ('')}
+                  <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
+                  <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSubject(e.target.value)} />
+                </>
+              ) : ('')}
+              {chosenSubject ? (
+                <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
+              ) : ('')}
+              {chosenProfessor ? (
+                <>
+                  <input placeholder="Exam url" id="url" type="text" onChange={(e) => setNewExamUrl(e.target.value)} required />
+                  <input placeholder="Exam title" id="title" type="text" onChange={(e) => setNewExamTitle(e.target.value)} required />
                 </>
               ) : ('')}
             </label>
@@ -172,10 +185,32 @@ export default function Filters() {
                 <option value={category} />
               ))}
             </datalist>
-            {isSubmit ? (
-              <Link to="/visualize/exams" onClick={() => submitRequest()}>
-                <input type="submit" className="submit" />
-              </Link>
+            {isSubmit && !isFinished ? (
+              <div className="submit-button" onClick={() => submitRequest()}>
+                Submit
+              </div>
+            ) : ('')}
+            {isFinished ? (
+              <StyledFinishedMessage>
+                <p>
+                  Exam added Successfully!
+                </p>
+                <div className="timer-wrapper">
+                  <CountdownCircleTimer
+                    isPlaying
+                    duration={5}
+                    colors={[
+                      ['#ffffff'],
+                    ]}
+                    size={70}
+                    trailColor="#271D42"
+                    strokeWidth={4}
+                    onComplete={() => window.location.reload()}
+                  >
+                    {({ remainingTime }) => remainingTime}
+                  </CountdownCircleTimer>
+                </div>
+              </StyledFinishedMessage>
             ) : ('')}
           </StyledForm>
         </StyledFormContainer>
@@ -208,7 +243,7 @@ const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7vh;
+  gap: 5vh;
   .inputs-container {
     display: flex;
     flex-direction: column;
@@ -243,7 +278,7 @@ const StyledForm = styled.form`
         outline: none;
       }
     }
-  .submit {
+  .submit-button {
     width: 200px;
     height:70px;
     border-radius: 60px;
@@ -253,40 +288,21 @@ const StyledForm = styled.form`
     color: #ffffff;
     cursor: pointer;
     border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     &:hover {
       opacity: 0.8;
     }
   }
 `;
-const StyledPublicButtonsContainer = styled.div`
-  width: 100vw;
+const StyledFinishedMessage = styled.div`
   display: flex;
-  justify-content: center;
-  gap: 18vw;
-  .login {
-    color: #434871;
-  }
-  .professor {
-    background-color: ${({ isProfessorFilter }) => (isProfessorFilter ? ('#bfbafc') : ('#878787'))};
-  }
-  .subject {
-    background-color: ${({ isSubjectFilter }) => (isSubjectFilter ? ('#bfbafc') : ('#878787'))};
-  }
-`;
-const StyledButton = styled.div`
-  padding: 0 20px;
-  width: 200px;
-  height:70px;
-  border-radius: 60px;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
+  gap: 50px;
   align-items: center;
-  cursor: pointer;
-  text-align: center;
-  &:hover {
-    opacity: 0.8;
+  font-size: 25px;
+  p {
+    color: green;
   }
 `;
