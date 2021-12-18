@@ -8,6 +8,7 @@ import {
 import { useNavigate } from 'react-router-dom';
 import FiltersContext from '../store/FiltersContext';
 import { getExams } from '../services/api';
+import { StyledPageContainer, StyledMainContent } from '../assets/styles/PageContainerStyle';
 
 export default function Exams() {
   const [exams, setExams] = useState([]);
@@ -53,7 +54,7 @@ export default function Exams() {
 
   return (
     <StyledPageContainer>
-      <StyledMainContent>
+      <StyledMainContent className="exams">
         <StyledBackButtonContainer>
           <StyledBackButton>
             <StyledBackIcon onClick={() => backScreen()}>
@@ -105,12 +106,6 @@ export default function Exams() {
   );
 }
 
-const StyledPageContainer = styled.div`
-  background: rgb(62,56,130); 
-  background: linear-gradient(127deg, rgba(62,56,130,1) 0%, rgba(73,67,142,1) 0%, rgba(104,98,176,1) 7%, rgba(62,56,130,1) 39%, rgba(32,21,47,1) 100%);
-  width: 100vw;
-  height: 100vh;
-`;
 const StyledBackButtonContainer = styled.div`
     width: 100vw;
     display: flex;
@@ -127,14 +122,6 @@ const StyledBackButton = styled.div`
 const StyledBackIcon = styled(IoArrowBackCircleSharp)`
     font-size: 50px;
     cursor: pointer;
-`;
-const StyledMainContent = styled.div`
-  position: absolute;
-  top: 150px;
-  height: calc(100vh - 150px);
-  display: flex;
-  flex-direction: column;
-  gap: 2vh;
 `;
 const StyledTitle = styled.h2`
     text-align: center;
