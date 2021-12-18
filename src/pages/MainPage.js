@@ -8,10 +8,14 @@ export default function MainPage() {
     <StyledPageContainer>
       <StyledMainContent>
         <StyledMainTextContainer>
-          <p>Main TextMain TextMain TextMain TextMain TextMain TextMain TextMain TextMain Text</p>
+          <p>The best exams database underground website</p>
         </StyledMainTextContainer>
         <StyledPublicButtonsContainer>
-          <StyledButton>Send</StyledButton>
+          <Link to="/send">
+            <StyledButton>
+              Send
+            </StyledButton>
+          </Link>
           <Link to="/visualize">
             <StyledButton>
               Visualize
