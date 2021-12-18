@@ -12,6 +12,8 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import {
   getSchools, getCategories, getProfessorsByFilter, getSubjectsByFilter, sendNewExam,
 } from '../services/api';
+import { StyledPageContainer, StyledMainContent } from '../assets/styles/PageContainerStyle';
+import { StyledFormContainer, StyledForm } from '../assets/styles/FormsStyle';
 
 export default function Send() {
   const [schoolsList, setSchoolsList] = useState([]);
@@ -140,28 +142,75 @@ export default function Send() {
 
   return (
     <StyledPageContainer>
-      <StyledMainContent>
+      <StyledMainContent className="main">
         <StyledFormContainer>
           <StyledForm>
             <label htmlFor="filters" className="inputs-container">
               <h2>Select the options:</h2>
               <div className="input-box">
-                <input placeholder="School" list="schools" name="schools" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSchool(e.target.value)} />
-                <IoCloseCircleOutline className="x-icon" onClick={() => window.location.reload()} />
+                <input
+                  placeholder="School"
+                  list="schools"
+                  name="schools"
+                  id="filters"
+                  type="text"
+                  onKeyDown={(e) => e.preventDefault()}
+                  onSelect={(e) => setChosenSchool(e.target.value)}
+                />
+                <IoCloseCircleOutline
+                  className="x-icon"
+                  onClick={() => window.location.reload()}
+                />
               </div>
               {chosenSchool ? (
                 <>
-                  <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
-                  <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSubject(e.target.value)} />
+                  <input
+                    placeholder="Category"
+                    list="categories"
+                    name="categories"
+                    id="filters"
+                    type="text"
+                    onKeyDown={(e) => e.preventDefault()}
+                    onSelect={(e) => setChosenCategory(e.target.value)}
+                  />
+                  <input
+                    placeholder="subject"
+                    list="subjects"
+                    name="subjects"
+                    id="filters"
+                    type="text"
+                    onKeyDown={(e) => e.preventDefault()}
+                    onSelect={(e) => setChosenSubject(e.target.value)}
+                  />
                 </>
               ) : ('')}
               {chosenSubject ? (
-                <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
+                <input
+                  placeholder="Professor"
+                  list="professors"
+                  name="professors"
+                  id="filters"
+                  type="text"
+                  onKeyDown={(e) => e.preventDefault()}
+                  onSelect={(e) => setChosenProfessor(e.target.value)}
+                />
               ) : ('')}
               {chosenProfessor ? (
                 <>
-                  <input placeholder="Exam url" id="url" type="text" onChange={(e) => setNewExamUrl(e.target.value)} required />
-                  <input placeholder="Exam title" id="title" type="text" onChange={(e) => setNewExamTitle(e.target.value)} required />
+                  <input
+                    placeholder="Exam url"
+                    id="url"
+                    type="text"
+                    onChange={(e) => setNewExamUrl(e.target.value)}
+                    required
+                  />
+                  <input
+                    placeholder="Exam title"
+                    id="title"
+                    type="text"
+                    onChange={(e) => setNewExamTitle(e.target.value)}
+                    required
+                  />
                 </>
               ) : ('')}
             </label>
@@ -199,9 +248,7 @@ export default function Send() {
                   <CountdownCircleTimer
                     isPlaying
                     duration={5}
-                    colors={[
-                      ['#ffffff'],
-                    ]}
+                    colors={[['#ffffff']]}
                     size={70}
                     trailColor="#271D42"
                     strokeWidth={4}
@@ -219,84 +266,6 @@ export default function Send() {
   );
 }
 
-const StyledPageContainer = styled.div`
-  background: rgb(62,56,130); 
-  background: linear-gradient(127deg, rgba(62,56,130,1) 0%, rgba(73,67,142,1) 0%, rgba(104,98,176,1) 7%, rgba(62,56,130,1) 39%, rgba(32,21,47,1) 100%);
-  width: 100vw;
-  height: 100vh;
-`;
-const StyledMainContent = styled.div`
-  position: absolute;
-  top: 150px;
-  height: calc(100vh - 150px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5vh;
-`;
-const StyledFormContainer = styled.div`
-  width: 100vw;
-`;
-const StyledForm = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5vh;
-  .inputs-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5vh;
-    h2 {
-      color: #ffffff;
-      font-size: 30px;
-      margin-bottom:2vh;
-    }
-    .input-box {
-    display: flex;
-    gap: 20px;
-    align-items: center;
-    justify-content: center;
-    .x-icon {
-      font-size: 45px;
-      color: red;
-      cursor: pointer;
-    }
-    }
-  }
-  input {
-      width: 350px;
-      height: 40px;
-      border-radius: 20px;
-      border: none;
-      padding: 0 15px;
-      font-size: 20px;
-      :focus {
-        outline: none;
-      }
-    }
-  .submit-button {
-    width: 200px;
-    height:70px;
-    border-radius: 60px;
-    background-color: #bfbafc;
-    font-size: 20px;
-    font-weight: 700;
-    color: #ffffff;
-    cursor: pointer;
-    border: none;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-`;
 const StyledFinishedMessage = styled.div`
   display: flex;
   gap: 50px;

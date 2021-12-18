@@ -2,30 +2,31 @@
 import styled from 'styled-components';
 import { FaEthereum } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
+import { StyledPageContainer, StyledMainContent, StyledGenericContainer } from '../assets/styles/PageContainerStyle';
+import { StyledPublicButtonsContainer, StyledButton } from '../assets/styles/ButtonStyle';
 
 export default function MainPage() {
   return (
     <StyledPageContainer>
-      <StyledMainContent>
-        <StyledMainTextContainer>
-          <p>The best exams database underground website</p>
-        </StyledMainTextContainer>
+      <StyledMainContent className="main">
+        <StyledGenericContainer>
+          <StyledMainText>The best exams database underground website</StyledMainText>
+        </StyledGenericContainer>
         <StyledPublicButtonsContainer>
           <Link to="/send">
-            <StyledButton>
+            <StyledButton className="main">
               Send
             </StyledButton>
           </Link>
           <Link to="/visualize">
-            <StyledButton>
+            <StyledButton className="main">
               Visualize
             </StyledButton>
           </Link>
         </StyledPublicButtonsContainer>
         <StyledPublicButtonsContainer>
-          <StyledButton className="login">
+          <StyledButton className="main">
             <EtherIcon />
-            Login with Ethereum
           </StyledButton>
         </StyledPublicButtonsContainer>
       </StyledMainContent>
@@ -33,29 +34,7 @@ export default function MainPage() {
   );
 }
 
-const StyledPageContainer = styled.div`
-  background: rgb(62,56,130); 
-  background: linear-gradient(127deg, rgba(62,56,130,1) 0%, rgba(73,67,142,1) 0%, rgba(104,98,176,1) 7%, rgba(62,56,130,1) 39%, rgba(32,21,47,1) 100%);
-  width: 100vw;
-  height: 100vh;
-`;
-const StyledMainContent = styled.div`
-  position: absolute;
-  top: 150px;
-  height: calc(100vh - 150px);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5vh;
-`;
-const StyledMainTextContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 18vw;
-  p {
+const StyledMainText = styled.p`
     font-size: 55px;
     color:#ffffff;
     font-weight: 700;
@@ -64,43 +43,8 @@ const StyledMainTextContainer = styled.div`
     letter-spacing: 3px;
     text-align: center;
     max-width: 1300px;
-  }
-`;
-const StyledPublicButtonsContainer = styled.div`
-  width: 100vw;
-  display: flex;
-  justify-content: center;
-  gap: 18vw;
-  .login {
-    color: #434871;
-  }
-`;
-const StyledButton = styled.div`
-  padding: 0 20px;
-  width: 200px;
-  height:70px;
-  border-radius: 60px;
-  background-color: #bfbafc;
-  font-size: 20px;
-  font-weight: 700;
-  color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  text-align: center;
-  &:hover {
-    opacity: 0.8;
-  }
 `;
 const EtherIcon = styled(FaEthereum)`
   font-size: 40px;
   color: #434871;
 `;
-
-export {
-  StyledPublicButtonsContainer,
-  StyledButton,
-  StyledPageContainer,
-  StyledMainContent,
-};

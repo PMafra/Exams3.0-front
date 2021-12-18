@@ -12,7 +12,9 @@ export default function Navbar() {
       <StyledTopBarContainer>
         <StyledOption>About</StyledOption>
         <StyledOption>Profile</StyledOption>
-        <StyledOption onClick={() => navigate('/')}>Home</StyledOption>
+        <StyledOption onClick={() => navigate('/')}>
+          Home
+        </StyledOption>
       </StyledTopBarContainer>
     </StyledHeader>
   );

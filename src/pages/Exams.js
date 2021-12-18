@@ -1,13 +1,16 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import styled from 'styled-components';
-import { IoArrowBackCircleSharp } from 'react-icons/io5';
 import {
   useEffect, useContext, useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FiltersContext from '../store/FiltersContext';
 import { getExams } from '../services/api';
+import { StyledPageContainer, StyledMainContent, StyledGenericContainer } from '../assets/styles/PageContainerStyle';
+import { StyledButton, StyledPublicButtonsContainer } from '../assets/styles/ButtonStyle';
+import Exam from '../components/Exam';
+import BackButton from '../components/BackButton';
 
 export default function Exams() {
   const [exams, setExams] = useState([]);
@@ -43,51 +46,34 @@ export default function Exams() {
     requestFilteredExams();
   }, []);
 
-  const backScreen = () => {
-    if (chosenPeriod) {
-      setChosenPeriod('');
-    } else {
-      navigate('/visualize');
-    }
-  };
-
   return (
     <StyledPageContainer>
-      <StyledMainContent>
-        <StyledBackButtonContainer>
-          <StyledBackButton>
-            <StyledBackIcon onClick={() => backScreen()}>
-              Back
-            </StyledBackIcon>
-          </StyledBackButton>
-        </StyledBackButtonContainer>
+      <StyledMainContent className="exams">
+        <StyledGenericContainer className="main">
+          <BackButton setChosenPeriod={setChosenPeriod} chosenPeriod={chosenPeriod} />
+        </StyledGenericContainer>
         <StyledTitle>
-          {filters.chosenProfessor ? (
-            filters.chosenProfessor
-          ) : (filters.chosenSubject)}
+          {filters.chosenProfessor ? (filters.chosenProfessor) : (filters.chosenSubject)}
         </StyledTitle>
         {!chosenPeriod ? (
-          <StyledPeriodsContainer>
+          <StyledGenericContainer className="main">
             {periods.map((period) => (
               <StyledPeriod onClick={() => setChosenPeriod(period)}>
                 {period}
               </StyledPeriod>
             ))}
-          </StyledPeriodsContainer>
+          </StyledGenericContainer>
         ) : (
-          <StyledExamsContainer>
-            {exams.map((exam) => (
-              exam.title.split('-')[0] === chosenPeriod ? (
-                <StyledExamBox>
-                  <StyledExam><h3>{exam.title}</h3></StyledExam>
-                  <StyledExam><a href={exam.link} target="_blanck">{exam.link}</a></StyledExam>
-                </StyledExamBox>
+          <StyledGenericContainer className="exams">
+            {exams.map(({ title, link }) => (
+              title.split('-')[0] === chosenPeriod ? (
+                <Exam title={title} link={link} />
               ) : ('')
             ))}
-          </StyledExamsContainer>
+          </StyledGenericContainer>
         )}
         {exams.length === 0 ? (
-          <StyledNoContentContainer>
+          <StyledGenericContainer className="no-content">
             <p>
               {`We still dont have ${filters.chosenCategory} exams of ${filters.chosenProfessor ? (
                 filters.chosenProfessor
@@ -95,129 +81,32 @@ export default function Exams() {
                 filters.chosenSubject
               )}`}
             </p>
-            <StyledButton onClick={() => navigate('/send')}>
-              Send an exam
-            </StyledButton>
-          </StyledNoContentContainer>
+            <StyledPublicButtonsContainer>
+              <StyledButton className="main" onClick={() => navigate('/send')}>
+                Send an exam
+              </StyledButton>
+            </StyledPublicButtonsContainer>
+          </StyledGenericContainer>
         ) : ('')}
       </StyledMainContent>
     </StyledPageContainer>
   );
 }
 
-const StyledPageContainer = styled.div`
-  background: rgb(62,56,130); 
-  background: linear-gradient(127deg, rgba(62,56,130,1) 0%, rgba(73,67,142,1) 0%, rgba(104,98,176,1) 7%, rgba(62,56,130,1) 39%, rgba(32,21,47,1) 100%);
-  width: 100vw;
-  height: 100vh;
-`;
-const StyledBackButtonContainer = styled.div`
-    width: 100vw;
-    display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  margin-top: 3vh;
-`;
-const StyledBackButton = styled.div`
-    width: 100vw;
-    max-width: 600px;
-    height: 50px;
-`;
-const StyledBackIcon = styled(IoArrowBackCircleSharp)`
-    font-size: 50px;
-    cursor: pointer;
-`;
-const StyledMainContent = styled.div`
-  position: absolute;
-  top: 150px;
-  height: calc(100vh - 150px);
-  display: flex;
-  flex-direction: column;
-  gap: 2vh;
-`;
 const StyledTitle = styled.h2`
-    text-align: center;
-    width: 100vw;
-    font-size: 50px;
-    color: #ffffff;
-    margin-bottom: 3vh;
-`;
-const StyledPeriodsContainer = styled.div`
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 3vh;
-`;
-const StyledExamsContainer = styled.div`
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 5vh;
-    text-align: left;
-`;
-const StyledExamBox = styled.div`
-    display: flex;
-    flex-direction: column;
-    gap: 1vh;
-    text-align: left;
-`;
-const StyledExam = styled.span`
-    color: #ffffff;
-    max-width: 850px;
-    h3 {
-        font-size: 25px;
-    }
-    a {
-        color: #ffffff;
-        font-size: 20px;
-        :hover {
-            color: green;
-        }
-    }
+  text-align: center;
+  width: 100vw;
+  font-size: 50px;
+  color: #ffffff;
+  margin-bottom: 3vh;
 `;
 const StyledPeriod = styled.span`
-    color: #ffffff;
-    font-size: 25px;
-    cursor: pointer;
-    :hover {
-        color: green;
-        text-decoration: underline;
-        text-underline-offset: 5px;
-    }
-`;
-const StyledNoContentContainer = styled.div`
-    width: 100vw;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 6vh;
-    p {
-        font-size: 25px;
-        color: #ffffff;
-    }
-`;
-const StyledButton = styled.div`
-  padding: 0 20px;
-  width: 200px;
-  height:70px;
-  border-radius: 60px;
-  background-color: #bfbafc;
-  font-size: 20px;
-  font-weight: 700;
   color: #ffffff;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-size: 25px;
   cursor: pointer;
-  text-align: center;
-  &:hover {
-    opacity: 0.8;
+  :hover {
+    color: green;
+    text-decoration: underline;
+    text-underline-offset: 5px;
   }
 `;
