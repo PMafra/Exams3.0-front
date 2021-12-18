@@ -13,6 +13,7 @@ const getCategories = () => axios.get(`${API_URL}/filters/categories`);
 const getProfessorsByFilter = (body) => axios.post(`${API_URL}/filters/professors`, body);
 const getSubjectsByFilter = (body) => axios.post(`${API_URL}/filters/subjects`, body);
 const getExams = (body) => axios.post(`${API_URL}/exams`, body);
+const sendNewExam = (body) => axios.post(`${API_URL}/exams/add`, body);
 
 export {
   getSchools,
@@ -20,4 +21,5 @@ export {
   getProfessorsByFilter,
   getSubjectsByFilter,
   getExams,
+  sendNewExam,
 };

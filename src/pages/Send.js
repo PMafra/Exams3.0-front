@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import {
-  getSchools, getCategories, getProfessorsByFilter, getSubjectsByFilter,
+  getSchools, getCategories, getProfessorsByFilter, getSubjectsByFilter, sendNewExam,
 } from '../services/api';
 
 export default function Send() {
@@ -24,6 +24,7 @@ export default function Send() {
   const [chosenCategory, setChosenCategory] = useState('');
   const [chosenSubject, setChosenSubject] = useState('');
 
+  const [newExamTitle, setNewExamTitle] = useState('');
   const [newExamUrl, setNewExamUrl] = useState('');
 
   const [isSubmit, setIsSubmit] = useState(false);
@@ -100,11 +101,36 @@ export default function Send() {
     return false;
   };
 
+  const validateTitle = () => {
+    if (newExamTitle.split('-').length === 2) {
+      return true;
+    }
+    return false;
+  };
+
   const submitRequest = () => {
     const isValidUrl = validateUrlExtension();
-    if (isValidUrl) {
+    const isValidTitle = validateTitle();
+    if (isValidUrl && isValidTitle) {
       console.log('finalizou');
-      setIsFinished(true);
+
+      const newExam = {
+        newExamTitle,
+        newExamUrl,
+        chosenCategory,
+        chosenProfessor,
+        chosenSubject,
+        chosenSchool,
+      };
+
+      sendNewExam(newExam)
+        .then((res) => {
+          console.log(res.data);
+          setIsFinished(true);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   };
 
@@ -133,7 +159,10 @@ export default function Send() {
                 <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
               ) : ('')}
               {chosenProfessor ? (
-                <input placeholder="Exam url" id="url" type="text" onChange={(e) => setNewExamUrl(e.target.value)} required />
+                <>
+                  <input placeholder="Exam url" id="url" type="text" onChange={(e) => setNewExamUrl(e.target.value)} required />
+                  <input placeholder="Exam title" id="title" type="text" onChange={(e) => setNewExamTitle(e.target.value)} required />
+                </>
               ) : ('')}
             </label>
             <datalist id="schools">
@@ -156,7 +185,7 @@ export default function Send() {
                 <option value={category} />
               ))}
             </datalist>
-            {isSubmit ? (
+            {isSubmit && !isFinished ? (
               <div className="submit-button" onClick={() => submitRequest()}>
                 Submit
               </div>
