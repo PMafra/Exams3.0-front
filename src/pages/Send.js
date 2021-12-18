@@ -1,10 +1,14 @@
+/* eslint-disable no-plusplus */
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-console */
 /* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { IoCloseCircleOutline } from 'react-icons/io5';
+import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import {
   getSchools, getCategories, getProfessorsByFilter, getSubjectsByFilter,
 } from '../services/api';
@@ -20,7 +24,11 @@ export default function Send() {
   const [chosenCategory, setChosenCategory] = useState('');
   const [chosenSubject, setChosenSubject] = useState('');
 
+  const [newExamUrl, setNewExamUrl] = useState('');
+
   const [isSubmit, setIsSubmit] = useState(false);
+
+  const [isFinished, setIsFinished] = useState(false);
 
   const requestSchools = () => {
     getSchools()
@@ -80,8 +88,24 @@ export default function Send() {
     requestProfessorsBySchoolAndSubject();
   }, [chosenSubject]);
 
+  const validateUrlExtension = () => {
+    const extensions = ['doc', 'docx', 'html', 'htm', 'odt', 'pdf', 'xls', 'xlsx', 'ods', 'ppt', 'pptx', 'txt'];
+    const urlArray = newExamUrl.split('.');
+    const extension = urlArray[urlArray.length - 1];
+    for (let i = 0; i < extensions.length; i++) {
+      if (extension === `${extensions[i]}`) {
+        return true;
+      }
+    }
+    return false;
+  };
+
   const submitRequest = () => {
-    console.log('finalizou');
+    const isValidUrl = validateUrlExtension();
+    if (isValidUrl) {
+      console.log('finalizou');
+      setIsFinished(true);
+    }
   };
 
   if (chosenProfessor && chosenCategory && chosenSubject && !isSubmit) {
@@ -99,14 +123,17 @@ export default function Send() {
                 <input placeholder="School" list="schools" name="schools" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSchool(e.target.value)} />
                 <IoCloseCircleOutline className="x-icon" onClick={() => window.location.reload()} />
               </div>
-              {chosenSchool !== '' ? (
+              {chosenSchool ? (
                 <>
                   <input placeholder="Category" list="categories" name="categories" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenCategory(e.target.value)} />
                   <input placeholder="subject" list="subjects" name="subjects" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenSubject(e.target.value)} />
-                  {chosenSubject ? (
-                    <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
-                  ) : ('')}
                 </>
+              ) : ('')}
+              {chosenSubject ? (
+                <input placeholder="Professor" list="professors" name="professors" id="filters" type="text" onKeyDown={(e) => e.preventDefault()} onSelect={(e) => setChosenProfessor(e.target.value)} />
+              ) : ('')}
+              {chosenProfessor ? (
+                <input placeholder="Exam url" id="url" type="text" onChange={(e) => setNewExamUrl(e.target.value)} required />
               ) : ('')}
             </label>
             <datalist id="schools">
@@ -130,9 +157,31 @@ export default function Send() {
               ))}
             </datalist>
             {isSubmit ? (
-              <Link to="/" onClick={() => submitRequest()}>
-                <input type="submit" className="submit" />
-              </Link>
+              <div className="submit-button" onClick={() => submitRequest()}>
+                Submit
+              </div>
+            ) : ('')}
+            {isFinished ? (
+              <StyledFinishedMessage>
+                <p>
+                  Exam added Successfully!
+                </p>
+                <div className="timer-wrapper">
+                  <CountdownCircleTimer
+                    isPlaying
+                    duration={5}
+                    colors={[
+                      ['#ffffff'],
+                    ]}
+                    size={70}
+                    trailColor="#271D42"
+                    strokeWidth={4}
+                    onComplete={() => window.location.reload()}
+                  >
+                    {({ remainingTime }) => remainingTime}
+                  </CountdownCircleTimer>
+                </div>
+              </StyledFinishedMessage>
             ) : ('')}
           </StyledForm>
         </StyledFormContainer>
@@ -165,7 +214,7 @@ const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 7vh;
+  gap: 5vh;
   .inputs-container {
     display: flex;
     flex-direction: column;
@@ -200,7 +249,7 @@ const StyledForm = styled.form`
         outline: none;
       }
     }
-  .submit {
+  .submit-button {
     width: 200px;
     height:70px;
     border-radius: 60px;
@@ -210,8 +259,21 @@ const StyledForm = styled.form`
     color: #ffffff;
     cursor: pointer;
     border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     &:hover {
       opacity: 0.8;
     }
+  }
+`;
+const StyledFinishedMessage = styled.div`
+  display: flex;
+  gap: 50px;
+  align-items: center;
+  font-size: 25px;
+  p {
+    color: green;
   }
 `;
