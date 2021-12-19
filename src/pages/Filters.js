@@ -56,17 +56,15 @@ export default function Filters() {
     })
       .then((res) => {
         setProfessorsList(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
   };
   const requestSubjectsBySchool = () => {
     getSubjects({ school: chosenSchool })
       .then((res) => {
         setSubjectsList(res.data);
-        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);

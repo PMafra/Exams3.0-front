@@ -33,6 +33,9 @@ export default function Send() {
 
   const [isFinished, setIsFinished] = useState(false);
 
+  const [isWrongUrl, setIsWrongUrl] = useState(false);
+  const [isWrongTitle, setIsWrongTitle] = useState(false);
+
   const requestSchools = () => {
     getSchools()
       .then((res) => {
@@ -88,49 +91,59 @@ export default function Send() {
     requestProfessorsBySchoolAndSubject();
   }, [chosenSubject]);
 
-  const validateUrlExtension = () => {
+  const validateUrl = () => {
     const extensions = ['doc', 'docx', 'html', 'htm', 'odt', 'pdf', 'xls', 'xlsx', 'ods', 'ppt', 'pptx', 'txt'];
     const urlArray = newExamUrl.split('.');
-    const extension = urlArray[urlArray.length - 1];
-    for (let i = 0; i < extensions.length; i++) {
-      if (extension === `${extensions[i]}`) {
-        return true;
+    if (urlArray.length > 1) {
+      const extension = urlArray[urlArray.length - 1];
+      for (let i = 0; i < extensions.length; i++) {
+        if (extension === `${extensions[i]}`) {
+          return true;
+        }
       }
     }
+    setIsWrongUrl(true);
+    setTimeout(() => setIsWrongUrl(false), 3000);
     return false;
   };
 
   const validateTitle = () => {
-    if (newExamTitle.split('-').length === 2) {
-      return true;
+    const titleArr = newExamTitle.split('-');
+    const yearAndPeriod = titleArr[0].trim();
+    const year = yearAndPeriod.split('.')[0];
+    const period = yearAndPeriod.split('.')[1];
+    if (!Number(yearAndPeriod) || year.length !== 4 || period.length !== 1
+    || Number(period) < 1 || Number(period) > 3 || Number(year) > new Date().getFullYear()) {
+      setIsWrongTitle(true);
+      setTimeout(() => setIsWrongTitle(false), 3000);
+      return false;
     }
-    return false;
+    return true;
   };
 
   const submitRequest = () => {
-    const isValidUrl = validateUrlExtension();
+    const isValidUrl = validateUrl();
     const isValidTitle = validateTitle();
-    if (isValidUrl && isValidTitle) {
-      console.log('finalizou');
-
-      const newExam = {
-        newExamTitle,
-        newExamUrl,
-        chosenCategory,
-        chosenProfessor,
-        chosenSubject,
-        chosenSchool,
-      };
-
-      sendNewExam(newExam)
-        .then((res) => {
-          console.log(res.data);
-          setIsFinished(true);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+    if (!isValidUrl || !isValidTitle) {
+      return false;
     }
+    const newExam = {
+      newExamTitle,
+      newExamUrl,
+      chosenCategory,
+      chosenProfessor,
+      chosenSubject,
+      chosenSchool,
+    };
+    sendNewExam(newExam)
+      .then((res) => {
+        console.log(res.data);
+        setIsFinished(true);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    return true;
   };
 
   if (chosenProfessor && chosenCategory && chosenSubject && !isSubmit) {
@@ -194,20 +207,38 @@ export default function Send() {
               ) : ('')}
               {chosenProfessor ? (
                 <>
-                  <input
-                    placeholder="Exam url"
-                    id="url"
-                    type="text"
-                    onChange={(e) => setNewExamUrl(e.target.value)}
-                    required
-                  />
-                  <input
-                    placeholder="Exam title"
-                    id="title"
-                    type="text"
-                    onChange={(e) => setNewExamTitle(e.target.value)}
-                    required
-                  />
+                  <div className="input-with-message">
+                    <input
+                      placeholder="Exam url"
+                      id="url"
+                      type="text"
+                      onChange={(e) => setNewExamUrl(e.target.value)}
+                      required
+                    />
+                    <StyledDescriptionUrl isWrongUrl={isWrongUrl}>
+                      * The url must be in one of the following formats:
+                      doc, docx, html, htm, odt, pdf, xls,
+                      xlsx, ods, ppt, pptx, txt
+                    </StyledDescriptionUrl>
+                  </div>
+                  <div className="input-with-message">
+                    <input
+                      placeholder="Exam title"
+                      id="title"
+                      type="text"
+                      onChange={(e) => setNewExamTitle(e.target.value)}
+                      required
+                    />
+                    <StyledDescriptionTitle isWrongTitle={isWrongTitle}>
+                      * The title must be in the following format:
+                      <br />
+                      classYear.classPeriod - classTitle
+                      <br />
+                      With classPeriod being number 1, 2 or 3
+                      <br />
+                      E.g.: 2021.2 - Introduction to Python
+                    </StyledDescriptionTitle>
+                  </div>
                 </>
               ) : ('')}
             </label>
@@ -271,4 +302,16 @@ const StyledFinishedMessage = styled.div`
   p {
     color: green;
   }
+`;
+const StyledDescriptionTitle = styled.p`
+      line-height: 18px;
+      opacity: 0.7;
+      width: 350px;
+      color: ${({ isWrongTitle }) => (isWrongTitle ? 'red' : '#ffffff')};
+`;
+const StyledDescriptionUrl = styled.p`
+      line-height: 18px;
+      opacity: 0.7;
+      width: 350px;
+      color: ${({ isWrongUrl }) => (isWrongUrl ? 'red' : '#ffffff')};
 `;
