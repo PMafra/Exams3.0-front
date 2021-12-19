@@ -52,12 +52,10 @@ export default function Filters() {
       });
   };
   const requestProfessorsBySchool = () => {
-    const body = {
-      chosenSchool,
-    };
-    getProfessorsByFilter(body)
+    getProfessorsByFilter(chosenSchool)
       .then((res) => {
         setProfessorsList(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -67,6 +65,7 @@ export default function Filters() {
     getSubjectsByFilter(chosenSchool)
       .then((res) => {
         setSubjectsList(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         console.log(err);
