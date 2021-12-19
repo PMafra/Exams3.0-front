@@ -8,17 +8,17 @@ const StyledForm = styled.form`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 6vh;
+  gap: 4vh;
   .inputs-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 5vh;
+    gap: 3vh;
     h2 {
       color: #ffffff;
       font-size: 30px;
-      margin-bottom:2vh;
+      margin-bottom:1vh;
     }
     .input-box {
     display: flex;
@@ -60,6 +60,11 @@ const StyledForm = styled.form`
     &:hover {
       opacity: 0.8;
     }
+  }
+  .input-with-message {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
   }
 `;
 
