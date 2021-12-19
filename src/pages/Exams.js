@@ -29,10 +29,7 @@ export default function Exams() {
   };
 
   const requestFilteredExams = () => {
-    const body = {
-      filters,
-    };
-    getExams(body)
+    getExams(filters)
       .then((res) => {
         setExams(res.data);
         definePeriods(res.data);
@@ -53,7 +50,7 @@ export default function Exams() {
           <BackButton setChosenPeriod={setChosenPeriod} chosenPeriod={chosenPeriod} />
         </StyledGenericContainer>
         <StyledTitle>
-          {filters.chosenProfessor ? (filters.chosenProfessor) : (filters.chosenSubject)}
+          {filters.professor ? (filters.professor) : (filters.subject)}
         </StyledTitle>
         {!chosenPeriod ? (
           <StyledGenericContainer className="main">
@@ -75,10 +72,10 @@ export default function Exams() {
         {exams.length === 0 ? (
           <StyledGenericContainer className="no-content">
             <p>
-              {`We still dont have ${filters.chosenCategory} exams of ${filters.chosenProfessor ? (
-                filters.chosenProfessor
+              {`We still dont have ${filters.category} exams of ${filters.professor ? (
+                filters.professor
               ) : (
-                filters.chosenSubject
+                filters.subject
               )}`}
             </p>
             <StyledPublicButtonsContainer>

@@ -1,19 +1,24 @@
+/* eslint-disable no-console */
 import axios from 'axios';
 
 const API_URL = 'http://localhost:4000';
 
 const getSchools = () => axios.get(`${API_URL}/filters/schools`);
 const getCategories = () => axios.get(`${API_URL}/filters/categories`);
-const getProfessorsByFilter = (body) => axios.post(`${API_URL}/filters/professors`, body);
-const getSubjectsByFilter = (body) => axios.post(`${API_URL}/filters/subjects`, body);
-const getExams = (body) => axios.post(`${API_URL}/exams`, body);
-const sendNewExam = (body) => axios.post(`${API_URL}/exams/add`, body);
+const getSubjects = ({ school }) => axios.get(`${API_URL}/filters/subjects?school=${school}`);
+const getProfessors = ({
+  school, subject,
+}) => axios.get(`${API_URL}/filters/professors?school=${school}&subject=${subject}`);
+const getExams = ({
+  school, category, professor, subject,
+}) => axios.get(`${API_URL}/exams?school=${school}&category=${category}&professor=${professor}&subject=${subject}`);
+const sendNewExam = (body) => axios.post(`${API_URL}/exams`, body);
 
 export {
   getSchools,
   getCategories,
-  getProfessorsByFilter,
-  getSubjectsByFilter,
+  getSubjects,
   getExams,
   sendNewExam,
+  getProfessors,
 };
