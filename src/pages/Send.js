@@ -52,10 +52,7 @@ export default function Send() {
       });
   };
   const requestSubjectsBySchool = () => {
-    const body = {
-      chosenSchool,
-    };
-    getSubjectsByFilter(body)
+    getSubjectsByFilter(chosenSchool)
       .then((res) => {
         setSubjectsList(res.data);
       })
