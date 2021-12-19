@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import {
-  getSchools, getCategories, getSubjectsByFilter, getProfessors,
+  getSchools, getCategories, getSubjectsByFilter, getProfessorsByFilter,
 } from '../services/api';
 import FiltersContext from '../store/FiltersContext';
 import { StyledPageContainer, StyledMainContent } from '../assets/styles/PageContainerStyle';
@@ -31,8 +31,6 @@ export default function Filters() {
 
   const { setFilters } = useContext(FiltersContext);
 
-  console.log({ chosenProfessor, chosenCategory, chosenSubject });
-
   const requestSchools = () => {
     getSchools()
       .then((res) => {
@@ -52,7 +50,10 @@ export default function Filters() {
       });
   };
   const requestProfessorsBySchool = () => {
-    getProfessors({ school: chosenSchool })
+    getProfessorsByFilter({
+      school: chosenSchool,
+      subject: '',
+    })
       .then((res) => {
         setProfessorsList(res.data);
         console.log(res.data);
@@ -98,10 +99,10 @@ export default function Filters() {
 
   const submitRequest = () => {
     setFilters({
-      chosenSchool,
-      chosenCategory,
-      chosenProfessor,
-      chosenSubject,
+      school: chosenSchool,
+      category: chosenCategory,
+      professor: chosenProfessor,
+      subject: chosenSubject,
     });
   };
 
