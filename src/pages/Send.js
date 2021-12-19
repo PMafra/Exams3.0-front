@@ -10,7 +10,7 @@ import styled from 'styled-components';
 import { IoCloseCircleOutline } from 'react-icons/io5';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import {
-  getSchools, getCategories, getProfessorsByTwoFilters, getSubjectsByFilter, sendNewExam,
+  getSchools, getCategories, getSubjectsByFilter, sendNewExam, getProfessors,
 } from '../services/api';
 import { StyledPageContainer, StyledMainContent } from '../assets/styles/PageContainerStyle';
 import { StyledFormContainer, StyledForm } from '../assets/styles/FormsStyle';
@@ -52,7 +52,7 @@ export default function Send() {
       });
   };
   const requestSubjectsBySchool = () => {
-    getSubjectsByFilter(chosenSchool)
+    getSubjectsByFilter({ school: chosenSchool })
       .then((res) => {
         setSubjectsList(res.data);
       })
@@ -66,7 +66,7 @@ export default function Send() {
       school: chosenSchool,
       subject: chosenSubject,
     };
-    getProfessorsByTwoFilters(filters)
+    getProfessors(filters)
       .then((res) => {
         setProfessorsList(res.data);
       })
