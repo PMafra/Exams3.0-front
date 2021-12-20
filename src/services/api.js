@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://exams3-0.herokuapp.com/';
+const API_URL = 'https://exams3-0.herokuapp.com';
 
 const getSchools = () => axios.get(`${API_URL}/filters/schools`);
 const getCategories = () => axios.get(`${API_URL}/filters/categories`);
