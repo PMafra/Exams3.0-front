@@ -1,10 +1,6 @@
 /* eslint-disable no-plusplus */
-/* eslint-disable jsx-a11y/click-events-have-key-events */
-/* eslint-disable jsx-a11y/no-static-element-interactions */
-/* eslint-disable react/button-has-type */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-console */
-/* eslint-disable no-unused-vars */
 import { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { IoCloseCircleOutline } from 'react-icons/io5';
@@ -20,19 +16,14 @@ export default function Send() {
   const [categoriesList, setCategoriesList] = useState([]);
   const [subjectsList, setSubjectsList] = useState([]);
   const [professorsList, setProfessorsList] = useState([]);
-
   const [chosenSchool, setChosenSchool] = useState('');
   const [chosenProfessor, setChosenProfessor] = useState('');
   const [chosenCategory, setChosenCategory] = useState('');
   const [chosenSubject, setChosenSubject] = useState('');
-
   const [newExamTitle, setNewExamTitle] = useState('');
   const [newExamUrl, setNewExamUrl] = useState('');
-
   const [isSubmit, setIsSubmit] = useState(false);
-
   const [isFinished, setIsFinished] = useState(false);
-
   const [isWrongUrl, setIsWrongUrl] = useState(false);
   const [isWrongTitle, setIsWrongTitle] = useState(false);
 
@@ -63,7 +54,6 @@ export default function Send() {
         console.log(err);
       });
   };
-
   const requestProfessorsBySchoolAndSubject = () => {
     const filters = {
       school: chosenSchool,
@@ -137,14 +127,19 @@ export default function Send() {
       chosenSchool,
     };
     sendNewExam(newExam)
-      .then((res) => {
-        console.log(res.data);
+      .then(() => {
         setIsFinished(true);
       })
       .catch((err) => {
         console.log(err);
       });
     return true;
+  };
+
+  const submitWithEnter = (e) => {
+    if (e.keyCode === 13) {
+      submitRequest();
+    }
   };
 
   if (chosenProfessor && chosenCategory && chosenSubject && !isSubmit) {
@@ -264,7 +259,13 @@ export default function Send() {
               ))}
             </datalist>
             {isSubmit && !isFinished ? (
-              <div className="submit-button" onClick={() => submitRequest()}>
+              <div
+                role="button"
+                tabIndex="0"
+                className="submit-button"
+                onClick={() => submitRequest()}
+                onKeyDown={(e) => submitWithEnter(e)}
+              >
                 Submit
               </div>
             ) : ('')}

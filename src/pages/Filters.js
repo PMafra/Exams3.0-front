@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-no-duplicate-props */
-/* eslint-disable no-unused-vars */
 /* eslint-disable jsx-a11y/control-has-associated-label */
 /* eslint-disable no-console */
 import { Link } from 'react-router-dom';
@@ -18,17 +16,13 @@ export default function Filters() {
   const [professorsList, setProfessorsList] = useState([]);
   const [subjectsList, setSubjectsList] = useState([]);
   const [categoriesList, setCategoriesList] = useState([]);
-
   const [chosenSchool, setChosenSchool] = useState('');
   const [chosenProfessor, setChosenProfessor] = useState('');
   const [chosenCategory, setChosenCategory] = useState('');
   const [chosenSubject, setChosenSubject] = useState('');
-
   const [isProfessorFilter, setIsProfessorFilter] = useState(true);
   const [isSubjectFilter, setIsSubjectFilter] = useState(false);
-
   const [isSubmit, setIsSubmit] = useState(false);
-
   const { setFilters } = useContext(FiltersContext);
 
   const requestSchools = () => {

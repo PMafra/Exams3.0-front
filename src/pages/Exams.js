@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable no-console */
 import styled from 'styled-components';
 import {
@@ -27,7 +26,6 @@ export default function Exams() {
     });
     setPeriods(newPeriods);
   };
-
   const requestFilteredExams = () => {
     getExams(filters)
       .then((res) => {
