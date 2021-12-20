@@ -94,7 +94,7 @@ export default function Send() {
   const validateUrl = () => {
     const extensions = ['doc', 'docx', 'html', 'htm', 'odt', 'pdf', 'xls', 'xlsx', 'ods', 'ppt', 'pptx', 'txt'];
     const urlArray = newExamUrl.split('.');
-    if (urlArray.length > 1) {
+    if (urlArray[urlArray.length - 2].length > 0) {
       const extension = urlArray[urlArray.length - 1];
       for (let i = 0; i < extensions.length; i++) {
         if (extension === `${extensions[i]}`) {
@@ -109,10 +109,11 @@ export default function Send() {
 
   const validateTitle = () => {
     const titleArr = newExamTitle.split('-');
+    const title = titleArr[1].trim();
     const yearAndPeriod = titleArr[0].trim();
     const year = yearAndPeriod.split('.')[0];
     const period = yearAndPeriod.split('.')[1];
-    if (!Number(yearAndPeriod) || year.length !== 4 || period.length !== 1
+    if (!Number(yearAndPeriod) || year.length !== 4 || period.length !== 1 || title.length === 0
     || Number(period) < 1 || Number(period) > 3 || Number(year) > new Date().getFullYear()) {
       setIsWrongTitle(true);
       setTimeout(() => setIsWrongTitle(false), 3000);
